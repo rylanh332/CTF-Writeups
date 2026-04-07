@@ -1,4 +1,4 @@
-# Lookup
+# LOOKUP
 ## User Flag:
 When I put in admin to the username field, the error message changes and just says "Wrong Password" rather than "Wrong Username & Password" and one of the content headers disappears
 
