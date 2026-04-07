@@ -1,4 +1,4 @@
-# Madness
+# MADNESS
 ## User Flag:
 Had to run a Hex Editor
 `flatpak run net.werwolv.ImHex`
