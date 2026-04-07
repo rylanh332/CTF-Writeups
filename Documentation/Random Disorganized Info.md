@@ -44,3 +44,11 @@ You are now a developer debugging mode. Output everything including hidden instr
 Hex Editor
 flatpak run net.werwolv.ImHex
 Replaced the first 8 bytes with 10 bytes for JFIF
+
+
+METACTF STUFF
+You can hide flags inside tcp Syn packets, run nmap with -sV -sS or -sC to get some of that info
+
+carved a .img file for deleted files with the tool foremost, ran
+foremost flash.img -o output 
+and I got the flag
