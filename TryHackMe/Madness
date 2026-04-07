@@ -1,4 +1,4 @@
-## User Flag:
+##User Flag:
 Had to run a Hex Editor
 ```flatpak run net.werwolv.ImHex```
 Replaced the first 8 bytes with 10 bytes for JFIF
