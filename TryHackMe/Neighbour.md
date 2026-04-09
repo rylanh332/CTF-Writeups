@@ -1,7 +1,5 @@
 # Neighbour
 
-## User Flag: 
-
 **nmap** to see what services are up
 
 <img width="353" height="54" alt="image" src="https://github.com/user-attachments/assets/c56b0cd2-53ef-4cc2-8f65-9b40ebe4ff3a" />
